@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokédex Quiz</title>
+
+<!-- Fuente Pokémon -->
+<link href="https://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #dc0a2d, #ffffff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.pokedex {
+    background: #f5f5f5;
+    border-radius: 20px;
+    width: 360px;
+    padding: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Pokemon Solid', sans-serif;
+    color: #ffcb05;
+    text-shadow: 3px 3px #3b4cca;
+    margin-bottom: 10px;
+}
+
+.pokemon-card {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.pokemon-card img {
+    width: 180px;
+    image-rendering: pixelated;
+}
+
+.pokemon-name {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid #3b4cca;
+    text-align: center;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #3b4cca;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+button:hover {
+    background: #2a2f9b;
+    transform: scale(1.05);
+}
+
+#result {
+    margin-top: 10px;
+    font-weight: bold;
+    min-height: 24px;
+}
+
+.chart-container {
+    margin-top: 15px;
+    background: white;
+    border-radius: 15px;
+    padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="pokedex">
+    <h1>Pokédex Quiz</h1>
+
+    <div class="pokemon-card">
+        <img id="pokemon-img">
+        <div class="pokemon-name" id="pokemon-name"></div>
+    </div>
+
+    <input type="number" id="poke-id-input" placeholder="Número Pokédex">
+    <br>
+    <button onclick="checkAnswer()">Confirmar</button>
+
+    <div id="result"></div>
+
+    <div class="chart-container">
+        <canvas id="progressChart"></canvas>
+    </div>
+</div>
+
+<script>
+let currentPokemon = null;
+let attempts = [];
+let corrects = [];
+
+async function getRandomPokemon() {
+    const id = Math.floor(Math.random() * 898) + 1;
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    const data = await res.json();
+
+    currentPokemon = data;
+    document.getElementById("pokemon-name").innerText = data.name.toUpperCase();
+    document.getElementById("pokemon-img").src = data.sprites.front_default;
+    document.getElementById("poke-id-input").value = "";
+    document.getElementById("result").innerText = "";
+}
+
+function checkAnswer() {
+    const input = parseInt(document.getElementById("poke-id-input").value);
+    if (!currentPokemon || isNaN(input)) return;
+
+    const ok = input === currentPokemon.id;
+    attempts.push(attempts.length + 1);
+    corrects.push(ok ? 1 : 0);
+
+    document.getElementById("result").innerText =
+        ok ? "✅ ¡Correcto!" : `❌ Era ${currentPokemon.id}`;
+
+    updateChart();
+    setTimeout(getRandomPokemon, 1200);
+}
+
+const ctx = document.getElementById("progressChart").getContext("2d");
+const progressChart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: attempts,
+        datasets: [{
+            label: "Aciertos",
+            data: corrects,
+            tension: 0.4,
+            fill: true,
+            backgroundColor: "rgba(59,76,202,0.2)",
+            borderColor: "#3b4cca"
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false }},
+        scales: {
+            y: { min: 0, max: 1, ticks: { stepSize: 1 }},
+            x: { display: false }
+        }
+    }
+});
+
+function updateChart() {
+    progressChart.data.labels = attempts;
+    progressChart.data.datasets[0].data = corrects;
+    progressChart.update();
+}
+
+getRandomPokemon();
+</script>
+</body>
+</html>
