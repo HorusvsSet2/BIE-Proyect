@@ -5,16 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pokédex Quiz</title>
 
-<!-- Fuente Pokémon -->
 <link href="https://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body {
     margin: 0;
     min-height: 100vh;
-    background: linear-gradient(135deg, #dc0a2d, #ffffff);
+    background: radial-gradient(circle at top, #ff1a1a, #7a0000);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,163 +20,252 @@ body {
 }
 
 .pokedex {
-    background: #f5f5f5;
-    border-radius: 20px;
-    width: 360px;
-    padding: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    text-align: center;
+    background: #d32f2f;
+    width: 390px;
+    border-radius: 25px;
+    padding: 15px;
+    box-shadow: inset -6px -6px 15px rgba(0,0,0,0.4),
+                inset 6px 6px 15px rgba(255,255,255,0.15),
+                0 20px 40px rgba(0,0,0,0.6);
 }
 
-h1 {
-    font-family: 'Pokemon Solid', sans-serif;
-    color: #ffcb05;
-    text-shadow: 3px 3px #3b4cca;
+.top-lights {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
-.pokemon-card {
-    background: white;
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+.main-light {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #9be7ff, #0066ff);
+    border-radius: 50%;
+    box-shadow: 0 0 20px #4fc3f7;
 }
 
-.pokemon-card img {
+.small-light {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+.red { background: #ff5252; }
+.yellow { background: #ffd740; }
+.green { background: #69f0ae; }
+
+.screen {
+    background: #e0f7fa;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.3);
+    text-align: center;
+    position: relative;
+}
+
+.scan {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        rgba(0,255,255,0.2),
+        rgba(0,255,255,0.2)
+    );
+    animation: scan 1s linear;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(100%); }
+}
+
+.screen img {
     width: 180px;
     image-rendering: pixelated;
 }
 
-.pokemon-name {
+.name {
     font-weight: bold;
-    font-size: 20px;
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.info {
+    background: #263238;
+    color: #a5fffa;
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 13px;
+    margin-top: 8px;
+    text-align: left;
+}
+
+.controls {
     margin-top: 10px;
+    text-align: center;
 }
 
 input {
     width: 80%;
-    padding: 10px;
+    padding: 8px;
     font-size: 16px;
     border-radius: 10px;
-    border: 2px solid #3b4cca;
+    border: none;
     text-align: center;
 }
 
 button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background: #3b4cca;
-    color: white;
-    border: none;
+    margin-top: 8px;
+    padding: 8px 20px;
     border-radius: 20px;
-    font-size: 16px;
+    border: none;
+    background: #1976d2;
+    color: white;
+    font-size: 15px;
     cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
 }
 
 button:hover {
-    background: #2a2f9b;
-    transform: scale(1.05);
+    background: #0d47a1;
 }
 
 #result {
-    margin-top: 10px;
+    margin-top: 6px;
     font-weight: bold;
-    min-height: 24px;
+    min-height: 22px;
 }
 
-.chart-container {
-    margin-top: 15px;
-    background: white;
-    border-radius: 15px;
-    padding: 10px;
+.chart-box {
+    background: #eceff1;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 5px;
 }
 </style>
 </head>
 <body>
 
 <div class="pokedex">
-    <h1>Pokédex Quiz</h1>
 
-    <div class="pokemon-card">
-        <img id="pokemon-img">
-        <div class="pokemon-name" id="pokemon-name"></div>
+    <div class="top-lights">
+        <div class="main-light"></div>
+        <div class="small-light red"></div>
+        <div class="small-light yellow"></div>
+        <div class="small-light green"></div>
     </div>
 
-    <input type="number" id="poke-id-input" placeholder="Número Pokédex">
-    <br>
-    <button onclick="checkAnswer()">Confirmar</button>
+    <div class="screen" id="screen">
+        <img id="pokemon-img">
+        <div class="name" id="pokemon-name"></div>
+        <div class="info" id="pokemon-info"></div>
+    </div>
 
-    <div id="result"></div>
+    <div class="controls">
+        <input type="number" id="poke-id-input" placeholder="Número Pokédex">
+        <br>
+        <button onclick="checkAnswer()">Confirmar</button>
+        <div id="result"></div>
+    </div>
 
-    <div class="chart-container">
+    <div class="chart-box">
         <canvas id="progressChart"></canvas>
     </div>
 </div>
 
 <script>
-let currentPokemon = null;
+let currentPokemon;
 let attempts = [];
-let corrects = [];
+let distances = [];
 
-async function getRandomPokemon() {
+async function loadPokemon() {
     const id = Math.floor(Math.random() * 898) + 1;
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await res.json();
-
     currentPokemon = data;
-    document.getElementById("pokemon-name").innerText = data.name.toUpperCase();
+
+    const screen = document.getElementById("screen");
+    screen.insertAdjacentHTML("beforeend", '<div class="scan"></div>');
+
     document.getElementById("pokemon-img").src = data.sprites.front_default;
+    document.getElementById("pokemon-name").innerText = data.name.toUpperCase();
+
+    const types = data.types.map(t => t.type.name).join(", ");
+    document.getElementById("pokemon-info").innerHTML = `
+        ID REAL: ${data.id}<br>
+        TIPO: ${types}<br>
+        ALTURA: ${data.height / 10} m<br>
+        PESO: ${data.weight / 10} kg<br>
+        EXP BASE: ${data.base_experience}
+    `;
+
     document.getElementById("poke-id-input").value = "";
     document.getElementById("result").innerText = "";
+
+    setTimeout(() => {
+        const scan = document.querySelector(".scan");
+        if (scan) scan.remove();
+    }, 1000);
 }
 
 function checkAnswer() {
-    const input = parseInt(document.getElementById("poke-id-input").value);
-    if (!currentPokemon || isNaN(input)) return;
+    const user = parseInt(document.getElementById("poke-id-input").value);
+    if (isNaN(user)) return;
 
-    const ok = input === currentPokemon.id;
+    const real = currentPokemon.id;
+    const distance = Math.abs(real - user);
+
     attempts.push(attempts.length + 1);
-    corrects.push(ok ? 1 : 0);
+    distances.push(distance);
 
-    document.getElementById("result").innerText =
-        ok ? "✅ ¡Correcto!" : `❌ Era ${currentPokemon.id}`;
+    let msg;
+    if (distance === 0) {
+        msg = "🎯 PERFECTO · ID EXACTO";
+    } else if (distance <= 3) {
+        msg = `🔥 CASI PERFECTO · A ${distance}`;
+    } else if (distance <= 10) {
+        msg = `👍 CERCA · A ${distance}`;
+    } else {
+        msg = `❌ LEJOS · A ${distance}`;
+    }
+
+    document.getElementById("result").innerText = msg;
 
     updateChart();
-    setTimeout(getRandomPokemon, 1200);
+    setTimeout(loadPokemon, 1500);
 }
 
-const ctx = document.getElementById("progressChart").getContext("2d");
-const progressChart = new Chart(ctx, {
+const ctx = document.getElementById("progressChart");
+const chart = new Chart(ctx, {
     type: "line",
     data: {
         labels: attempts,
         datasets: [{
-            label: "Aciertos",
-            data: corrects,
+            label: "Distancia al ID real",
+            data: distances,
             tension: 0.4,
             fill: true,
-            backgroundColor: "rgba(59,76,202,0.2)",
-            borderColor: "#3b4cca"
+            backgroundColor: "rgba(25,118,210,0.3)",
+            borderColor: "#1976d2"
         }]
     },
     options: {
         plugins: { legend: { display: false }},
         scales: {
-            y: { min: 0, max: 1, ticks: { stepSize: 1 }},
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: "Distancia (↓ mejor)" }
+            },
             x: { display: false }
         }
     }
 });
 
 function updateChart() {
-    progressChart.data.labels = attempts;
-    progressChart.data.datasets[0].data = corrects;
-    progressChart.update();
+    chart.data.labels = attempts;
+    chart.data.datasets[0].data = distances;
+    chart.update();
 }
 
-getRandomPokemon();
+loadPokemon();
 </script>
 </body>
 </html>
