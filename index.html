@@ -17,21 +17,11 @@
     --screen-bg: #e6fffa;
     --blue-main: #1565c0;
     --glass: rgba(255,255,255,0.12);
-    --type-colors: {
-        normal: #A8A77A; fire: #EE8130; water: #6390F0; electric: #F7D02C;
-        grass: #7AC74C; ice: #96D9D6; fighting: #C22E28; poison: #A33EA1;
-        ground: #E2BF65; flying: #A98FF3; psychic: #F95587; bug: #A6B91A;
-        rock: #B6A136; ghost: #735797; dragon: #6F35FC; dark: #705746;
-        steel: #B7B7CE; fairy: #D685AD;
-    };
 }
-
 * { box-sizing: border-box; }
-
 body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, #ff3b3b, var(--red-dark)); display: flex; justify-content: center; align-items: center; font-family: Arial, sans-serif; }
 
-.pokedex { width: 100%; max-width: 1100px; background: linear-gradient(145deg, #d32f2f, #b71c1c); border-radius: 32px; padding: 22px; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.45), inset 10px 10px 20px rgba(255,255,255,0.12), 0 35px 70px rgba(0,0,0,0.8); }
-
+.pokedex { width: 100%; max-width: 1200px; background: linear-gradient(145deg, #d32f2f, #b71c1c); border-radius: 32px; padding: 22px; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.45), inset 10px 10px 20px rgba(255,255,255,0.12), 0 35px 70px rgba(0,0,0,0.8); }
 .top-lights { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
 .main-light { width: 64px; height: 64px; background: radial-gradient(circle, #cfefff, #1e88e5); border-radius: 50%; box-shadow: 0 0 35px #64b5f6; }
 .small-light { width: 18px; height: 18px; border-radius: 50%; }
@@ -39,8 +29,7 @@ body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, 
 .yellow { background: #ffd740; }
 .green { background: #69f0ae; }
 
-.layout { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 18px; }
-
+.layout { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 20px; align-items: start; }
 .data-panel { background: linear-gradient(160deg, #1e272e, #111); border-radius: 22px; padding: 16px; color: #b2ebf2; box-shadow: inset 0 0 14px rgba(0,0,0,0.7); }
 .data-panel h3 { margin: 0 0 12px 0; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; }
 .info-list { display: grid; gap: 10px; }
@@ -53,17 +42,18 @@ body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, 
 .screen { background: linear-gradient(180deg, #f1fffe, #c8f5f0); border-radius: 26px; padding: 18px; box-shadow: inset 0 0 18px rgba(0,0,0,0.35); text-align: center; position: relative; }
 .scan { position: absolute; inset: 0; background: linear-gradient(rgba(0,255,255,0.18), rgba(0,255,255,0.18)); animation: scan 1s linear; pointer-events: none; }
 @keyframes scan { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
-.screen img { width: 260px; image-rendering: pixelated; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4)); }
+.screen img { width: 100%; max-width: 260px; image-rendering: pixelated; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4)); }
 .name { font-family: 'Pokemon Solid', sans-serif; font-size: 26px; margin-top: 10px; }
-.control-panel { background: linear-gradient(160deg, #1e272e, #111); border-radius: 22px; padding: 16px; box-shadow: inset 0 0 14px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: space-between; }
-.input-display { background: radial-gradient(circle at top, #000, #222); color: #00e5ff; font-size: 30px; border-radius: 16px; padding: 12px; text-align: right; margin-bottom: 14px; }
+
+.control-panel { background: linear-gradient(160deg, #1e272e, #111); border-radius: 22px; padding: 16px; box-shadow: inset 0 0 14px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: flex-start; }
+.input-display { background: radial-gradient(circle at top, #000, #222); color: #00e5ff; font-size: 30px; border-radius: 16px; padding: 12px; text-align: right; margin-bottom: 14px; min-height: 50px; }
 .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.keypad button { padding: 18px 0; font-size: 22px; border-radius: 18px; border: none; background: linear-gradient(145deg, #eceff1, #cfd8dc); }
+.keypad button { padding: 14px 0; font-size: 22px; border-radius: 18px; border: none; background: linear-gradient(145deg, #eceff1, #cfd8dc); }
 .keypad button.action { background: linear-gradient(145deg, #1e88e5, #1565c0); color: #fff; }
 .keypad button.clear { background: linear-gradient(145deg, #ff5252, #c62828); color: #fff; }
 #result { margin-top: 14px; font-weight: bold; min-height: 28px; color: #fff; text-align: center; }
 .chart-box { grid-column: 1 / -1; background: linear-gradient(180deg, #fafafa, #e0e0e0); border-radius: 20px; margin-top: 18px; padding: 12px; }
-@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .screen img { width: 200px; } }
+@media (max-width: 1000px) { .layout { grid-template-columns: 1fr; gap: 16px; } .screen img { max-width: 200px; margin: 0 auto; } .control-panel { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; } .input-display { flex: 1 1 100%; } .keypad { grid-template-columns: repeat(4, 1fr); width: 100%; } }
 </style>
 </head>
 <body>
@@ -89,22 +79,20 @@ body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, 
         </div>
 
         <div class="control-panel">
-            <div>
-                <div class="input-display" id="display">—</div>
-                <div class="keypad">
-                    <button onclick="pressKey(1)">1</button>
-                    <button onclick="pressKey(2)">2</button>
-                    <button onclick="pressKey(3)">3</button>
-                    <button onclick="pressKey(4)">4</button>
-                    <button onclick="pressKey(5)">5</button>
-                    <button onclick="pressKey(6)">6</button>
-                    <button onclick="pressKey(7)">7</button>
-                    <button onclick="pressKey(8)">8</button>
-                    <button onclick="pressKey(9)">9</button>
-                    <button class="clear" onclick="clearInput()">C</button>
-                    <button onclick="pressKey(0)">0</button>
-                    <button class="action" onclick="checkAnswer()">OK</button>
-                </div>
+            <div class="input-display" id="display">—</div>
+            <div class="keypad">
+                <button onclick="pressKey(1)">1</button>
+                <button onclick="pressKey(2)">2</button>
+                <button onclick="pressKey(3)">3</button>
+                <button onclick="pressKey(4)">4</button>
+                <button onclick="pressKey(5)">5</button>
+                <button onclick="pressKey(6)">6</button>
+                <button onclick="pressKey(7)">7</button>
+                <button onclick="pressKey(8)">8</button>
+                <button onclick="pressKey(9)">9</button>
+                <button class="clear" onclick="clearInput()">C</button>
+                <button onclick="pressKey(0)">0</button>
+                <button class="action" onclick="checkAnswer()">OK</button>
             </div>
             <div id="result"></div>
         </div>
@@ -116,62 +104,42 @@ body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top, 
 </div>
 
 <script>
-let currentPokemon;
-let attempts = [];
-let distances = [];
-let hits = 0;
-let inputValue = "";
+let currentPokemon; let attempts=[]; let distances=[]; let hits=0; let inputValue="";
 
-async function loadPokemon() {
-    const id = Math.floor(Math.random() * 898) + 1;
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    const data = await res.json();
-    currentPokemon = data;
+async function loadPokemon(){
+    const id=Math.floor(Math.random()*898)+1;
+    const res=await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+    const data=await res.json();
+    currentPokemon=data;
 
-    // reproducir sonido si existe
-    if(data.sprites.front_default) {
-        const audio = new Audio(`https://play.pokemonshowdown.com/audio/cries/${data.name.toLowerCase()}.mp3`);
+    if(data.sprites.front_default){
+        const audio=new Audio(`https://play.pokemonshowdown.com/audio/cries/${data.name.toLowerCase()}.mp3`);
         audio.play().catch(()=>{});
     }
 
-    const screen = document.getElementById("screen");
-    screen.insertAdjacentHTML("beforeend", '<div class="scan"></div>');
+    const screen=document.getElementById("screen");
+    screen.insertAdjacentHTML("beforeend",'<div class="scan"></div>');
 
-    document.getElementById("pokemon-img").src = data.sprites.front_default;
-    document.getElementById("pokemon-name").innerText = data.name.toUpperCase();
+    document.getElementById("pokemon-img").src=data.sprites.front_default;
+    document.getElementById("pokemon-name").innerText=data.name.toUpperCase();
 
-    document.getElementById("pokemon-info").innerHTML = `
-        <div class="info-item">${data.types.map(t => `<span class=\"type-badge\" style=\"background-color:${getTypeColor(t.type.name)}\">${t.type.name}</span>`).join("")}</div>
-        <div class="info-item">ALTURA: ${data.height / 10} m</div>
-        <div class="info-item">PESO: ${data.weight / 10} kg</div>
-        <div class="info-item">EXP BASE: ${data.base_experience}</div>
-    `;
+    document.getElementById("pokemon-info").innerHTML=`<div class="info-item">${data.types.map(t=>`<span class=\"type-badge\" style=\"background-color:${getTypeColor(t.type.name)}\">${t.type.name}</span>`).join('')}</div><div class="info-item">ALTURA: ${data.height/10} m</div><div class="info-item">PESO: ${data.weight/10} kg</div><div class="info-item">EXP BASE: ${data.base_experience}</div>`;
 
-    document.getElementById("extra-stats").innerHTML = data.stats.map(s => `
-        <div class="stat">${s.stat.name.toUpperCase()}<br>${s.base_stat}<div class=\"stat-bar\" style=\"width:${s.base_stat/2}%\"></div></div>
-    `).join("");
+    document.getElementById("extra-stats").innerHTML=data.stats.map(s=>`<div class="stat">${s.stat.name.toUpperCase()}<br>${s.base_stat}<div class="stat-bar" style="width:${s.base_stat/2}%"></div></div>`).join('');
 
-    clearInput();
-    document.getElementById("result").innerText = "";
+    clearInput(); document.getElementById("result").innerText='';
 
-    setTimeout(() => { const scan = document.querySelector(".scan"); if(scan) scan.remove(); }, 1000);
+    setTimeout(()=>{const scan=document.querySelector(".scan");if(scan)scan.remove();},1000);
 }
 
-function getTypeColor(type) {
-    const colors = {
-        normal:'#A8A77A', fire:'#EE8130', water:'#6390F0', electric:'#F7D02C', grass:'#7AC74C', ice:'#96D9D6', fighting:'#C22E28', poison:'#A33EA1', ground:'#E2BF65', flying:'#A98FF3', psychic:'#F95587', bug:'#A6B91A', rock:'#B6A136', ghost:'#735797', dragon:'#6F35FC', dark:'#705746', steel:'#B7B7CE', fairy:'#D685AD'
-    };
-    return colors[type] || '#777';
-}
-
-function pressKey(n) { if(inputValue.length>=4) return; inputValue+=n; updateDisplay(); }
-function clearInput() { inputValue=""; updateDisplay(); }
-function updateDisplay() { document.getElementById("display").innerText = inputValue||"—"; }
-function checkAnswer() { if(!inputValue) return; const user=parseInt(inputValue); const real=currentPokemon.id; const distance=Math.abs(real-user); attempts.push(attempts.length+1); distances.push(distance); let msg;if(distance===0){hits++;msg="🎯 ID PERFECTO";}else if(distance<=3)msg=`🔥 MUY CERCA (±${distance})`;else if(distance<=10)msg=`👍 CERCA (±${distance})`;else msg=`❌ LEJOS (±${distance})`;const accuracy=Math.round((hits/attempts.length)*100);document.getElementById("result").innerText=`${msg} · Precisión ${accuracy}%`;updateChart();setTimeout(loadPokemon,1500);}
-const ctx=document.getElementById("progressChart");
-const chart=new Chart(ctx,{type:"line",data:{labels:attempts,datasets:[{data:distances,tension:0.35,fill:true}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{display:false}}}});
+function getTypeColor(type){const colors={normal:'#A8A77A',fire:'#EE8130',water:'#6390F0',electric:'#F7D02C',grass:'#7AC74C',ice:'#96D9D6',fighting:'#C22E28',poison:'#A33EA1',ground:'#E2BF65',flying:'#A98FF3',psychic:'#F95587',bug:'#A6B91A',rock:'#B6A136',ghost:'#735797',dragon:'#6F35FC',dark:'#705746',steel:'#B7B7CE',fairy:'#D685AD'}; return colors[type]||'#777';}
+function pressKey(n){if(inputValue.length>=4)return; inputValue+=n; updateDisplay();}
+function clearInput(){inputValue="";updateDisplay();}
+function updateDisplay(){document.getElementById("display").innerText=inputValue||'—';}
+function checkAnswer(){if(!inputValue)return;const user=parseInt(inputValue);const real=currentPokemon.id;const distance=Math.abs(real-user);attempts.push(attempts.length+1);distances.push(distance);let msg;if(distance===0){hits++;msg='🎯 ID PERFECTO';}else if(distance<=3)msg=`🔥 MUY CERCA (±${distance})`;else if(distance<=10)msg=`👍 CERCA (±${distance})`;else msg=`❌ LEJOS (±${distance})`;const accuracy=Math.round((hits/attempts.length)*100);document.getElementById("result").innerText=`${msg} · Precisión ${accuracy}%`;updateChart();setTimeout(loadPokemon,1500);}
+const ctx=document.getElementById("progressChart");const chart=new Chart(ctx,{type:'line',data:{labels:attempts,datasets:[{data:distances,tension:0.35,fill:true}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{display:false}}}});
 function updateChart(){chart.data.labels=attempts;chart.data.datasets[0].data=distances;chart.update();}
-window.addEventListener("keydown",e=>{if(e.key>='0'&&e.key<='9')pressKey(e.key);if(e.key==='Backspace')clearInput();if(e.key==='Enter')checkAnswer();});
+window.addEventListener('keydown',e=>{if(e.key>='0'&&e.key<='9')pressKey(e.key);if(e.key==='Backspace')clearInput();if(e.key==='Enter')checkAnswer();});
 loadPokemon();
 </script>
 </body>
